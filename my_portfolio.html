@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #3D3E40; 
+        }
+
+        .description {
+            width: 40%;
+            padding: 20px;
+            background-color: #3D3E40;
+            font-style: italic;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: center; 
+            margin-top: 100px; 
+            gap: 50px; 
+            text-align: left;
+            min-height: 300px; 
+        }
+
+        .description h1 {
+            font-size: 50px;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6; 
+            color: #ffffff; 
+            margin: 0;
+            margin-bottom: 20px;
+            text-align: center; 
+        }
+
+        .description p {
+            font-size: 18px; 
+            font-family: 'Poppins', sans-serif;
+            color: #cecece; 
+            margin: 0; 
+            letter-spacing: 0.1vw; 
+            text-align: left; 
+            line-height: 1.4; 
+        }
+
+        .slider-container {
+            width: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background-color: #3D3E40; 
+        }
+
+        .slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #FFFFFF; 
+            flex-direction: column; 
+        }
+
+        .slide img {
+            width: 80%; 
+            height: auto;
+            max-height: 70%; 
+            object-fit: cover;
+        }
+
+        .slide p {
+            font-size: 18px; 
+            font-family: 'Poppins', sans-serif;
+            color: #FFFFFF; 
+            text-align: center;
+            max-width: 80%; 
+            margin-top: 10px; 
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            background-color: rgba(0, 0, 0, 0.5);
+            user-select: none;
+            z-index: 1;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev {
+            left: 0;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .dots {
+            text-align: center;
+            padding: 10px;
+            background: #ddd;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .dots span {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active, .dots span:hover {
+            background-color: #717171;
+        }
+
+        @media (max-width: 768px) {
+            .description h1 {
+                font-size: 36px;
+            }
+
+            .description p {
+                font-size: 16px;
+            }
+
+            .slider-container {
+                width: 100%;
+            }
+
+            .description {
+                width: 100%;
+                padding: 10px;
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="description">
+    <h1 id="descriptionTitle">Title for Image 1</h1>
+    <p id="descriptionText">Context for Image 1: Explanation or details about the first image.</p>
+</div>
+
+<div class="slider-container">
+    <div class="slider">
+        <div class="slides">
+            <div class="slide">
+                <img src="image1.png" alt="Image 1">
+            </div>
+            <div class="slide">
+                <img src="image2.png" alt="Image 2">
+            </div>
+            <div class="slide">
+                <img src="image3.png" alt="Image 3">
+            </div>
+            <div class="slide">
+                <img src="image4.png" alt="Image 4">
+            </div>
+        </div>
+        <a class="prev" onclick="moveSlides(-1)">&#10094;</a>
+        <a class="next" onclick="moveSlides(1)">&#10095;</a>
+    </div>
+</div>
+
+<div class="dots">
+    <span onclick="currentSlide(1)"></span>
+    <span onclick="currentSlide(2)"></span>
+    <span onclick="currentSlide(3)"></span>
+    <span onclick="currentSlide(4)"></span>
+</div>
+
+<script>
+    let slideIndex = 0;
+    const slides = document.querySelector('.slides');
+    const totalSlides = slides.children.length;
+    const dots = document.querySelectorAll('.dots span');
+    const descriptionTitle = document.getElementById('descriptionTitle');
+    const descriptionText = document.getElementById('descriptionText');
+
+    const descriptions = [
+        {
+            title: "Guessing Game",
+            text: `The Ultimate Number Guessing Game is a simple yet thrilling game where players try to guess a sequence of three numbers.
+            After entering their guesses, the game checks how many numbers match the pre-determined winning numbers. 
+            <br><br>
+            If one or two numbers are guessed correctly, the player wins a smaller prize. However, if all three numbers are correctly guessed, 
+            the player wins the jackpot.`
+        },
+        {
+            title: "Jak En Poy",
+            text: `In this 'Jak en Poy' game, players go head-to-head with an AI in the classic game of Rock, Paper, Scissors. Players choose between rock, paper, or scissors, and the AI makes its selection. The game keeps track of the score, with the first to reach 10 points declared the winner. It's a fun and competitive way to see who can outsmart the AI and claim victory.`
+        },
+        {
+            title: "Health Information System",
+            text: `This Health Information System ensures campus safety by requiring students to log in with their student number and temperature before entry. The system is connected to a database that automatically records each entry, helping to monitor and manage student health efficiently.`
+        },
+        {
+            title: "In Between Card Game",
+            text: `In this 'In Between' card game, the AI randomizes two numbers, and you pick a random card. You can choose to 'deal' or 'no deal.' If your card falls between the two numbers, you win based on your bet. It's a thrilling game of chance where your decision could lead to a big payout.`
+        }
+    ];
+
+    showSlides(slideIndex);
+
+    function moveSlides(n) {
+        slideIndex = (slideIndex + n + totalSlides) % totalSlides;
+        showSlides(slideIndex);
+    }
+
+    function currentSlide(n) {
+        slideIndex = n - 1;
+        showSlides(slideIndex);
+    }
+
+    function showSlides(index) {
+        slides.style.transform = `translateX(${-index * 100}%)`;
+        descriptionTitle.textContent = descriptions[index].title;
+        descriptionText.innerHTML = descriptions[index].text;
+
+        dots.forEach((dot, i) => {
+            dot.className = dot.className.replace(" active", "");
+            if (i === index) {
+                dot.className += " active";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
